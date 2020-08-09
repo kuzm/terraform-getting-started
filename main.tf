@@ -1,11 +1,10 @@
-resource "aws_instance" "example" {
-  ami           = "ami-0c115dbd34c69a004"
-  instance_type = "t3.nano"
+module "example_aws_instance" {
+  source = "./modules/example-aws-instance"
   tags = local.common_tags
 }
 
-resource "aws_eip" "ip" {
-  vpc = true
-  instance = aws_instance.example.id
+module "elastic_ip" {
+  source = "./modules/elastic-ip"
+  aws_instance_id = module.example_aws_instance.instance_id
   tags = local.common_tags
 }
